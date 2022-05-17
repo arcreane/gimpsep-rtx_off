@@ -1,3 +1,15 @@
 Gimpsep.sln
 Gimpsep.vcxproj
 Gimpsep.x64
+.db
+.db-shm
+.sb-wal
+.opendb
+.ipch
+.Layout
+.filters
+.recipe
+.ilk
+.log
+.tlog
+.obj
