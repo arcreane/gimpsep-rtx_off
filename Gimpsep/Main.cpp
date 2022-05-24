@@ -6,8 +6,8 @@ using namespace cv;
 using namespace std;
 
 int brightness = 50;
-int width = 50;
-int height = 50;
+int width = 500;
+int height = 500;
 Mat original,image;
 
 
@@ -81,6 +81,12 @@ static void on_brightnessbar(int, void*)
     imshow("original", image);
 }
 
+static void on_resizebar(int, void*)
+{
+    image = resizing(original,width,height);
+    imshow("original", image);
+}
+
 int main(int argc, char* argv[]) {
     // Read the image file
     String imageName = "van_gogh.jpg";
@@ -94,18 +100,19 @@ int main(int argc, char* argv[]) {
 
     //create windows
     namedWindow("original", WINDOW_AUTOSIZE);
+    namedWindow("tools", WINDOW_AUTOSIZE);
     //namedWindow("dilatation", WINDOW_AUTOSIZE);
     //namedWindow("errosion", WINDOW_AUTOSIZE);
     //namedWindow("resize", WINDOW_AUTOSIZE);
     //namedWindow("light", WINDOW_AUTOSIZE);
     //namedWindow("dark", WINDOW_AUTOSIZE);
     //namedWindow("stitch", WINDOW_AUTOSIZE);
-    namedWindow("canny", WINDOW_AUTOSIZE);
+    //namedWindow("canny", WINDOW_AUTOSIZE);
 
    
-    createTrackbar("Brightness", "original", &brightness, 100, on_brightnessbar);
-    createTrackbar("Width", "original", &width, 1000, on_brightnessbar);
-    createTrackbar("Height", "original", &height, 1000, on_brightnessbar);
+    createTrackbar("Brightness", "tools", &brightness, 100, on_brightnessbar);
+    createTrackbar("Width", "tools", &width, 1000, on_resizebar);
+    createTrackbar("Height", "tools", &height, 1000, on_resizebar);
 
     //show images
     imshow("original", original);
@@ -115,8 +122,7 @@ int main(int argc, char* argv[]) {
     //imshow("light", lightenAnDarken(image,1,50));
     //imshow("dark", lightenAnDarken(image,1,-50));
     //imshow("stitch", panoramastitching(image,secondImage));
-    imshow("canny", CannyEdgeDetection(image));
-    imshow("original", lightenAnDarken(image, 1, brightness - 50));
+    //imshow("canny", CannyEdgeDetection(image));
 
 
     // Wait for any key stroke
