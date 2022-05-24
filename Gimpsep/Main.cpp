@@ -174,10 +174,18 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
     }
     if (event == EVENT_LBUTTONUP)
     {
-        rectangle(canvas, buttonDelate, Scalar(200, 200, 200), 2);
-        rectangle(canvas, buttonErode, Scalar(200, 200, 200), 2);
-        rectangle(canvas, buttonCannydetection, Scalar(200, 200, 200), 2);
-        rectangle(canvas, buttonStitch, Scalar(200, 200, 200), 2);
+        if (!isDilate) {
+            rectangle(canvas, buttonDelate, Scalar(200, 200, 200), 2);
+        }
+        if (!isErode) {
+            rectangle(canvas, buttonErode, Scalar(200, 200, 200), 2);
+        }
+        if (!isCanny) {
+            rectangle(canvas, buttonCannydetection, Scalar(200, 200, 200), 2);
+        }
+        if (!toStitch) {
+            rectangle(canvas, buttonStitch, Scalar(200, 200, 200), 2);
+        }
     }
 
     imshow(toolsWindowName, canvas);
