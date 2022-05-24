@@ -11,12 +11,16 @@ int height = 500;
 Mat original,image;
 
 Mat3b canvas;
-string buttonText("Click me!");
+
 string toolsWindowName = "tools";
 Rect buttonDelate;
+string buttonDelateText("buttonDelate");
 Rect buttonErode;
+string buttonErodeText("buttonErode");
 Rect buttonCannydetection;
+string buttonCannydetectionText("buttonCannydetection");
 Rect buttonStitch;
+string buttonStitchText("buttonStitch");
 
 Mat dilatationAndErosion(Mat image, string action) {
     int morph_size = 2;
@@ -90,46 +94,27 @@ static void on_trackbar(int, void*)
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
 {
-
-    //if (event == EVENT_LBUTTONDOWN) // check mouse event type
-    //{
-    //    cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
-    //}
-    //else if (event == EVENT_RBUTTONDOWN) // check mouse event type
-    //{
-    //    cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
-    //}
-    //else if (event == EVENT_MBUTTONDOWN) // check mouse event type
-    //{
-    //    cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
-    //}
-    //else if (event == EVENT_MOUSEMOVE) // check mouse event type
-    //{
-    //    cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
-
-    //}
-
     if (event == EVENT_LBUTTONDOWN)
     {
         
         if (buttonDelate.contains(Point(x, y)))
         {
-            cout << "Clicked!" << endl;
+            cout << "buttonDelate Clicked!" << endl;
             rectangle(canvas(buttonDelate), buttonDelate, Scalar(0, 0, 255), 2);
         }
         if (buttonErode.contains(Point(x, y)))
         {
-            cout << "Clicked!" << endl;
+            cout << "buttonErode Clicked!" << endl;
             rectangle(canvas(buttonErode), buttonErode, Scalar(0, 0, 255), 2);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
-            cout << "Clicked!" << endl;
+            cout << "buttonCannydetection Clicked!" << endl;
             rectangle(canvas(buttonCannydetection), buttonCannydetection, Scalar(0, 0, 255), 2);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
-            cout << "Clicked!" << endl;
+            cout << "buttonStitch Clicked!" << endl;
             rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
         }
     }
@@ -183,12 +168,24 @@ int main(int argc, char* argv[]) {
     //Rect buttonStitch;
     buttonDelate = Rect(0, 0, img.cols, 50);
 
+    buttonErode = Rect(0, 50, img.cols, 50);
+
+    buttonCannydetection = Rect(0, 100, img.cols, 50);
+
+    buttonStitch = Rect(0, 150, img.cols, 50);
+
     // The canvas
     canvas = Mat3b(img.rows + buttonDelate.height, img.cols, Vec3b(0, 0, 0));
 
     // Draw the button
     canvas(buttonDelate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDelate), buttonText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+    canvas(buttonErode) = Vec3b(200, 200, 200);
+    putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+    canvas(buttonCannydetection) = Vec3b(200, 200, 200);
+    putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+    canvas(buttonStitch) = Vec3b(200, 200, 200);
+    putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
     // Draw the image
     img.copyTo(canvas(Rect(0, buttonDelate.height, img.cols, img.rows)));
