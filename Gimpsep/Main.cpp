@@ -10,6 +10,13 @@ int width = 500;
 int height = 500;
 Mat original,image;
 
+Mat3b canvas;
+string buttonText("Click me!");
+string toolsWindowName = "tools";
+Rect buttonDelate;
+Rect buttonErode;
+Rect buttonCannydetection;
+Rect buttonStitch;
 
 Mat dilatationAndErosion(Mat image, string action) {
     int morph_size = 2;
@@ -74,12 +81,68 @@ Mat CannyEdgeDetection(Mat image) {
     return imageCanny;
 }
 
-
 static void on_trackbar(int, void*)
 {
     image = lightenAnDarken(original, 1, brightness - 50);
     image = resizing(image, width, height);
     imshow("original", image);
+}
+
+void callBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+
+    //if (event == EVENT_LBUTTONDOWN) // check mouse event type
+    //{
+    //    cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    //}
+    //else if (event == EVENT_RBUTTONDOWN) // check mouse event type
+    //{
+    //    cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    //}
+    //else if (event == EVENT_MBUTTONDOWN) // check mouse event type
+    //{
+    //    cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    //}
+    //else if (event == EVENT_MOUSEMOVE) // check mouse event type
+    //{
+    //    cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+
+    //}
+
+    if (event == EVENT_LBUTTONDOWN)
+    {
+        
+        if (buttonDelate.contains(Point(x, y)))
+        {
+            cout << "Clicked!" << endl;
+            rectangle(canvas(buttonDelate), buttonDelate, Scalar(0, 0, 255), 2);
+        }
+        if (buttonErode.contains(Point(x, y)))
+        {
+            cout << "Clicked!" << endl;
+            rectangle(canvas(buttonErode), buttonErode, Scalar(0, 0, 255), 2);
+        }
+        if (buttonCannydetection.contains(Point(x, y)))
+        {
+            cout << "Clicked!" << endl;
+            rectangle(canvas(buttonCannydetection), buttonCannydetection, Scalar(0, 0, 255), 2);
+        }
+        if (buttonStitch.contains(Point(x, y)))
+        {
+            cout << "Clicked!" << endl;
+            rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
+        }
+    }
+    if (event == EVENT_LBUTTONUP)
+    {
+        rectangle(canvas, buttonDelate, Scalar(200, 200, 200), 2);
+        rectangle(canvas, buttonErode, Scalar(200, 200, 200), 2);
+        rectangle(canvas, buttonCannydetection, Scalar(200, 200, 200), 2);
+        rectangle(canvas, buttonStitch, Scalar(200, 200, 200), 2);
+    }
+
+    imshow(toolsWindowName, canvas);
+    waitKey(1);
 }
 
 int main(int argc, char* argv[]) {
@@ -106,10 +169,33 @@ int main(int argc, char* argv[]) {
     //namedWindow("canny", WINDOW_AUTOSIZE);
 
    
-    createTrackbar("Brightness", "tools", &brightness, 100, on_trackbar);
-    createTrackbar("Width", "tools", &width, 1000, on_trackbar);
-    createTrackbar("Height", "tools", &height, 1000, on_trackbar);
+    createTrackbar("Brightness", toolsWindowName, &brightness, 100, on_trackbar);
+    createTrackbar("Width", toolsWindowName, &width, 1000, on_trackbar);
+    createTrackbar("Height", toolsWindowName, &height, 1000, on_trackbar);
 
+    // An image
+    Mat3b img(300, 300, Vec3b(0, 255, 0));
+
+    // Your button
+    //Rect buttonDelate;
+    //Rect buttonErode;
+    //Rect buttonCannydetection;
+    //Rect buttonStitch;
+    buttonDelate = Rect(0, 0, img.cols, 50);
+
+    // The canvas
+    canvas = Mat3b(img.rows + buttonDelate.height, img.cols, Vec3b(0, 0, 0));
+
+    // Draw the button
+    canvas(buttonDelate) = Vec3b(200, 200, 200);
+    putText(canvas(buttonDelate), buttonText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+
+    // Draw the image
+    img.copyTo(canvas(Rect(0, buttonDelate.height, img.cols, img.rows)));
+
+    // Setup callback function
+    namedWindow(toolsWindowName);
+    setMouseCallback(toolsWindowName, callBackFunc);
     //show images
     imshow("original", original);
     //imshow("dilatation", dilatationAndErosion(image,"dilate"));
