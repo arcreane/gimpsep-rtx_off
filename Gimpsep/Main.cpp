@@ -90,7 +90,7 @@ Mat CannyEdgeDetection(Mat image) {
 
 static void update() {
     image = lightenAnDarken(original, 1, brightness - 50);
-    image = resizing(image, width, height);
+    image = resizing(image, width+10, height+10);
     if (isDilate) {
         image = dilatationAndErosion(image, "dilate");
     }
