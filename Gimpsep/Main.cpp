@@ -9,6 +9,9 @@ int brightness = 50;
 int width = 500;
 int height = 500;
 Mat original,image;
+bool isErode = false;
+bool isDilate = false;
+bool isCanny = false;
 
 Mat3b canvas;
 
@@ -85,11 +88,23 @@ Mat CannyEdgeDetection(Mat image) {
     return imageCanny;
 }
 
-static void on_trackbar(int, void*)
-{
+static void update() {
     image = lightenAnDarken(original, 1, brightness - 50);
     image = resizing(image, width, height);
+    if (isDilate) {
+        image = dilatationAndErosion(image, "dilate");
+    }
+    if (isErode) {
+        image = dilatationAndErosion(image, "erode");
+    }
+    if (isCanny) {
+        image = CannyEdgeDetection(image);
+    }
     imshow("original", image);
+}
+
+static void on_trackbar(int, void*) {
+    update();
 }
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
@@ -99,21 +114,40 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
         
         if (buttonDelate.contains(Point(x, y)))
         {
+            if (isDilate) {
+                isDilate = false;
+            } else {
+                isDilate = true;
+            }
+            update();
             cout << "buttonDelate Clicked!" << endl;
             rectangle(canvas(buttonDelate), buttonDelate, Scalar(0, 0, 255), 2);
         }
         if (buttonErode.contains(Point(x, y)))
         {
+            if (isErode) {
+                isErode = false;
+            } else {
+                isErode = true;
+            }
+            update();
             cout << "buttonErode Clicked!" << endl;
             rectangle(canvas(buttonErode), buttonErode, Scalar(0, 0, 255), 2);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
+            if (isCanny) {
+                isCanny = false;
+            } else {
+                isCanny = true;
+            }
+            update();
             cout << "buttonCannydetection Clicked!" << endl;
             rectangle(canvas(buttonCannydetection), buttonCannydetection, Scalar(0, 0, 255), 2);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
+            update();
             cout << "buttonStitch Clicked!" << endl;
             rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
         }
