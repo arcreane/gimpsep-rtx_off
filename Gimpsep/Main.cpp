@@ -9,6 +9,11 @@ int brightness = 50;
 int width = 500;
 int height = 500;
 Mat original,image;
+bool isErode = false;
+bool isDilate = false;
+bool isCanny = false;
+bool toStitch = false;
+Mat imageToStitch;
 
 Mat3b canvas;
 
@@ -85,11 +90,26 @@ Mat CannyEdgeDetection(Mat image) {
     return imageCanny;
 }
 
-static void on_trackbar(int, void*)
-{
+static void update() {
     image = lightenAnDarken(original, 1, brightness - 50);
-    image = resizing(image, width, height);
+    image = resizing(image, width+10, height+10);
+    if (isDilate) {
+        image = dilatationAndErosion(image, "dilate");
+    }
+    if (isErode) {
+        image = dilatationAndErosion(image, "erode");
+    }
+    if (isCanny) {
+        image = CannyEdgeDetection(image);
+    }
+    if (toStitch) {
+        image = panoramastitching(image, imageToStitch);
+    }
     imshow("original", image);
+}
+
+static void on_trackbar(int, void*) {
+    update();
 }
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
@@ -99,23 +119,57 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
         
         if (buttonDelate.contains(Point(x, y)))
         {
+            if (isDilate) {
+                isDilate = false;
+            } else {
+                isDilate = true;
+            }
+            update();
             cout << "buttonDelate Clicked!" << endl;
             rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
         }
         if (buttonErode.contains(Point(x, y)))
         {
+            if (isErode) {
+                isErode = false;
+            } else {
+                isErode = true;
+            }
+            update();
             cout << "buttonErode Clicked!" << endl;
             rectangle(canvas, buttonErode, Scalar(0, 0, 255), 2);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
+            if (isCanny) {
+                isCanny = false;
+            } else {
+                isCanny = true;
+            }
+            update();
             cout << "buttonCannydetection Clicked!" << endl;
             rectangle(canvas, buttonCannydetection, Scalar(0, 0, 255), 2);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
+
             cout << "buttonStitch Clicked!" << endl;
-            rectangle(canvas, buttonStitch, Scalar(0, 0, 255), 2);
+            string imagePath;
+            cout << "Enter an image path:" << endl;
+            cin >> imagePath;
+            Mat imageToStitch;
+            imageToStitch = imread(imagePath, IMREAD_COLOR);
+            // Check for failure
+            if (imageToStitch.empty())
+            {
+                printf(" No image data \n ");
+            }
+            else {
+                toStitch = true;
+                update();
+            }
+            rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
+
         }
     }
     if (event == EVENT_LBUTTONUP)
@@ -145,15 +199,8 @@ int main(int argc, char* argv[]) {
     //create windows
     namedWindow("original", WINDOW_AUTOSIZE);
     namedWindow("tools", WINDOW_AUTOSIZE);
-    //namedWindow("dilatation", WINDOW_AUTOSIZE);
-    //namedWindow("errosion", WINDOW_AUTOSIZE);
-    //namedWindow("resize", WINDOW_AUTOSIZE);
-    //namedWindow("light", WINDOW_AUTOSIZE);
-    //namedWindow("dark", WINDOW_AUTOSIZE);
-    //namedWindow("stitch", WINDOW_AUTOSIZE);
-    //namedWindow("canny", WINDOW_AUTOSIZE);
-
    
+    //create trackBars
     createTrackbar("Brightness", toolsWindowName, &brightness, 100, on_trackbar);
     createTrackbar("Width", toolsWindowName, &width, 1000, on_trackbar);
     createTrackbar("Height", toolsWindowName, &height, 1000, on_trackbar);
@@ -196,15 +243,9 @@ int main(int argc, char* argv[]) {
     // Setup callback function
     namedWindow(toolsWindowName);
     setMouseCallback(toolsWindowName, callBackFunc);
-    //show images
+    
+    //show image
     imshow("original", original);
-    //imshow("dilatation", dilatationAndErosion(image,"dilate"));
-    //imshow("errosion", dilatationAndErosion(image, "erode"));
-    //imshow("resize", resizing(image,200,400));
-    //imshow("light", lightenAnDarken(image,1,50));
-    //imshow("dark", lightenAnDarken(image,1,-50));
-    //imshow("stitch", panoramastitching(image,secondImage));
-    //imshow("canny", CannyEdgeDetection(image));
 
 
     // Wait for any key stroke
