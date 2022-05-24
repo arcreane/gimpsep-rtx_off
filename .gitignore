@@ -13,6 +13,7 @@ Gimpsep.x64
 .log
 .tlog
 .obj
+.exe
 .vs/Gimpsep/v17/.suo
 .vs/Gimpsep/v17/Browse.VC.db
 .vs/Gimpsep/v17/Browse.VC.db-shm
@@ -45,3 +46,4 @@ Gimpsep/Gimpsep.vcxproj.Layout
 Gimpsep/x64/Debug/rotate_video_students.obj
 
 .vs/Gimpsep/v17/ipch/AutoPCH/ec159e9999ee0e9c/ROTATE_VIDEO_STUDENTS.ipch
+.vs/Gimpsep/v17/ipch/AutoPCH/26ac991967ceb757/MAIN.ipch
