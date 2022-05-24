@@ -13,6 +13,7 @@ Gimpsep.x64
 .log
 .tlog
 .obj
+.exe
 .vs/Gimpsep/v17/.suo
 .vs/Gimpsep/v17/Browse.VC.db
 .vs/Gimpsep/v17/Browse.VC.db-shm
