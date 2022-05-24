@@ -100,22 +100,22 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
         if (buttonDelate.contains(Point(x, y)))
         {
             cout << "buttonDelate Clicked!" << endl;
-            rectangle(canvas(buttonDelate), buttonDelate, Scalar(0, 0, 255), 2);
+            rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
         }
         if (buttonErode.contains(Point(x, y)))
         {
             cout << "buttonErode Clicked!" << endl;
-            rectangle(canvas(buttonErode), buttonErode, Scalar(0, 0, 255), 2);
+            rectangle(canvas, buttonErode, Scalar(0, 0, 255), 2);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
             cout << "buttonCannydetection Clicked!" << endl;
-            rectangle(canvas(buttonCannydetection), buttonCannydetection, Scalar(0, 0, 255), 2);
+            rectangle(canvas, buttonCannydetection, Scalar(0, 0, 255), 2);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
             cout << "buttonStitch Clicked!" << endl;
-            rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
+            rectangle(canvas, buttonStitch, Scalar(0, 0, 255), 2);
         }
     }
     if (event == EVENT_LBUTTONUP)
@@ -168,14 +168,14 @@ int main(int argc, char* argv[]) {
     //Rect buttonStitch;
     buttonDelate = Rect(0, 0, img.cols, 50);
 
-    buttonErode = Rect(0, 50, img.cols, 50);
+    buttonErode = Rect(0, 60, img.cols, 50);
 
-    buttonCannydetection = Rect(0, 100, img.cols, 50);
+    buttonCannydetection = Rect(0, 120, img.cols, 50);
 
-    buttonStitch = Rect(0, 150, img.cols, 50);
+    buttonStitch = Rect(0, 180, img.cols, 50);
 
     // The canvas
-    canvas = Mat3b(img.rows + buttonDelate.height, img.cols, Vec3b(0, 0, 0));
+    canvas = Mat3b(img.rows + buttonDelate.height+buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
 
     // Draw the button
     canvas(buttonDelate) = Vec3b(200, 200, 200);
@@ -188,7 +188,10 @@ int main(int argc, char* argv[]) {
     putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
     // Draw the image
-    img.copyTo(canvas(Rect(0, buttonDelate.height, img.cols, img.rows)));
+    //img.copyTo(canvas(Rect(0, buttonDelate.height, img.cols, img.rows)));
+    //img.copyTo(canvas(Rect(0, buttonErode.height, img.cols, img.rows)));
+    //img.copyTo(canvas(Rect(0, buttonCannydetection.height, img.cols, img.rows)));
+    //img.copyTo(canvas(Rect(0, buttonStitch.height, img.cols, img.rows)));
 
     // Setup callback function
     namedWindow(toolsWindowName);
