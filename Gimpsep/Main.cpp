@@ -75,15 +75,10 @@ Mat CannyEdgeDetection(Mat image) {
 }
 
 
-static void on_brightnessbar(int, void*)
+static void on_trackbar(int, void*)
 {
     image = lightenAnDarken(original, 1, brightness - 50);
-    imshow("original", image);
-}
-
-static void on_resizebar(int, void*)
-{
-    image = resizing(original,width,height);
+    image = resizing(image, width, height);
     imshow("original", image);
 }
 
@@ -91,6 +86,7 @@ int main(int argc, char* argv[]) {
     // Read the image file
     String imageName = "van_gogh.jpg";
     original = imread(imageName, IMREAD_COLOR);
+    image = original;
     // Check for failure
     if (original.empty())
     {
@@ -110,9 +106,9 @@ int main(int argc, char* argv[]) {
     //namedWindow("canny", WINDOW_AUTOSIZE);
 
    
-    createTrackbar("Brightness", "tools", &brightness, 100, on_brightnessbar);
-    createTrackbar("Width", "tools", &width, 1000, on_resizebar);
-    createTrackbar("Height", "tools", &height, 1000, on_resizebar);
+    createTrackbar("Brightness", "tools", &brightness, 100, on_trackbar);
+    createTrackbar("Width", "tools", &width, 1000, on_trackbar);
+    createTrackbar("Height", "tools", &height, 1000, on_trackbar);
 
     //show images
     imshow("original", original);
