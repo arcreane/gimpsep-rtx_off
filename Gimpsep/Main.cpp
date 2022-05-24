@@ -5,8 +5,11 @@
 using namespace cv;
 using namespace std;
 
-int main(int argc, char* argv[]){
-}
+int brightness = 50;
+int width = 50;
+int height = 50;
+Mat original,image;
+
 
 Mat dilatationAndErosion(Mat image, string action) {
     int morph_size = 2;
@@ -36,7 +39,7 @@ Mat resizing(Mat image, int width, int height) {
 	return resized;
 }
 
-void lightenAnDarken(Mat image, double alpha, int beta) {
+Mat lightenAnDarken(Mat image, double alpha, int beta) {
     Mat new_image = Mat::zeros(image.size(), image.type());
     for (int y = 0; y < image.rows; y++) {
         for (int x = 0; x < image.cols; x++) {
@@ -46,6 +49,7 @@ void lightenAnDarken(Mat image, double alpha, int beta) {
             }
         }
     }
+    return new_image;
 }
 
 Mat panoramastitching(Mat image, Mat imageToStitch) {
@@ -66,6 +70,59 @@ Mat panoramastitching(Mat image, Mat imageToStitch) {
 
 Mat CannyEdgeDetection(Mat image) {
     Mat imageCanny;
-    cv::Canny(image, imageCanny, 60, 150, 3, false);
+    cv::Canny(image, imageCanny, 350, 350, 3, false);
     return imageCanny;
+}
+
+
+static void on_brightnessbar(int, void*)
+{
+    image = lightenAnDarken(original, 1, brightness - 50);
+    imshow("original", image);
+}
+
+int main(int argc, char* argv[]) {
+    // Read the image file
+    String imageName = "van_gogh.jpg";
+    original = imread(imageName, IMREAD_COLOR);
+    // Check for failure
+    if (original.empty())
+    {
+        printf(" No image data \n ");
+        return -1;
+    }
+
+    //create windows
+    namedWindow("original", WINDOW_AUTOSIZE);
+    //namedWindow("dilatation", WINDOW_AUTOSIZE);
+    //namedWindow("errosion", WINDOW_AUTOSIZE);
+    //namedWindow("resize", WINDOW_AUTOSIZE);
+    //namedWindow("light", WINDOW_AUTOSIZE);
+    //namedWindow("dark", WINDOW_AUTOSIZE);
+    //namedWindow("stitch", WINDOW_AUTOSIZE);
+    namedWindow("canny", WINDOW_AUTOSIZE);
+
+   
+    createTrackbar("Brightness", "original", &brightness, 100, on_brightnessbar);
+    createTrackbar("Width", "original", &width, 1000, on_brightnessbar);
+    createTrackbar("Height", "original", &height, 1000, on_brightnessbar);
+
+    //show images
+    imshow("original", original);
+    //imshow("dilatation", dilatationAndErosion(image,"dilate"));
+    //imshow("errosion", dilatationAndErosion(image, "erode"));
+    //imshow("resize", resizing(image,200,400));
+    //imshow("light", lightenAnDarken(image,1,50));
+    //imshow("dark", lightenAnDarken(image,1,-50));
+    //imshow("stitch", panoramastitching(image,secondImage));
+    imshow("canny", CannyEdgeDetection(image));
+    imshow("original", lightenAnDarken(image, 1, brightness - 50));
+
+
+    // Wait for any key stroke
+    waitKey(0);
+
+    //destroy all open windows
+    destroyAllWindows;
+    return 0;
 }
