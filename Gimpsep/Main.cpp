@@ -19,13 +19,13 @@ Mat3b canvas;
 
 string toolsWindowName = "tools";
 Rect buttonDelate;
-string buttonDelateText("buttonDelate");
+string buttonDelateText("Delate");
 Rect buttonErode;
-string buttonErodeText("buttonErode");
+string buttonErodeText("Erode");
 Rect buttonCannydetection;
-string buttonCannydetectionText("buttonCannydetection");
+string buttonCannydetectionText("CannyEdge");
 Rect buttonStitch;
-string buttonStitchText("buttonStitch");
+string buttonStitchText("Stitch");
 
 Mat dilatationAndErosion(Mat image, string action) {
     int morph_size = 2;
@@ -105,7 +105,7 @@ static void update() {
     if (toStitch) {
         image = panoramastitching(image, imageToStitch);
     }
-    imshow("original", image);
+    imshow("image", image);
 }
 
 static void on_trackbar(int, void*) {
@@ -119,41 +119,21 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
         
         if (buttonDelate.contains(Point(x, y)))
         {
-            if (isDilate) {
-                isDilate = false;
-            } else {
-                isDilate = true;
-            }
-            update();
-            cout << "buttonDelate Clicked!" << endl;
+            isDilate = !isDilate;
             rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
         }
         if (buttonErode.contains(Point(x, y)))
         {
-            if (isErode) {
-                isErode = false;
-            } else {
-                isErode = true;
-            }
-            update();
-            cout << "buttonErode Clicked!" << endl;
+            isErode = !isErode;
             rectangle(canvas, buttonErode, Scalar(0, 0, 255), 2);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
-            if (isCanny) {
-                isCanny = false;
-            } else {
-                isCanny = true;
-            }
-            update();
-            cout << "buttonCannydetection Clicked!" << endl;
+            isCanny = !isCanny;
             rectangle(canvas, buttonCannydetection, Scalar(0, 0, 255), 2);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
-
-            cout << "buttonStitch Clicked!" << endl;
             string imagePath;
             cout << "Enter an image path:" << endl;
             cin >> imagePath;
@@ -166,11 +146,11 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
             }
             else {
                 toStitch = true;
-                update();
             }
             rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
 
         }
+        update();
     }
     if (event == EVENT_LBUTTONUP)
     {
@@ -193,10 +173,19 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 }
 
 int main(int argc, char* argv[]) {
+    // Enter the ui option
+    int uiOption;
+    cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
+    cin >> uiOption;
+
     // Read the image file
-    String imageName = "van_gogh.jpg";
+    String imageName;
+    cout << "Enter an image path:" << endl;
+    cin >> imageName;
+    imageName = "van_gogh.jpg";
     original = imread(imageName, IMREAD_COLOR);
     image = original;
+
     // Check for failure
     if (original.empty())
     {
@@ -204,62 +193,104 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    //create windows
-    namedWindow("original", WINDOW_AUTOSIZE);
-    namedWindow("tools", WINDOW_AUTOSIZE);
-   
-    //create trackBars
-    createTrackbar("Brightness", toolsWindowName, &brightness, 100, on_trackbar);
-    createTrackbar("Width", toolsWindowName, &width, 1000, on_trackbar);
-    createTrackbar("Height", toolsWindowName, &height, 1000, on_trackbar);
+    //create window
+    namedWindow("image", WINDOW_AUTOSIZE);
 
-    // An image
-    Mat3b img(300, 300, Vec3b(0, 255, 0));
-
-    // Your button
-    //Rect buttonDelate;
-    //Rect buttonErode;
-    //Rect buttonCannydetection;
-    //Rect buttonStitch;
-    buttonDelate = Rect(0, 0, img.cols, 50);
-
-    buttonErode = Rect(0, 60, img.cols, 50);
-
-    buttonCannydetection = Rect(0, 120, img.cols, 50);
-
-    buttonStitch = Rect(0, 180, img.cols, 50);
-
-    // The canvas
-    canvas = Mat3b(img.rows + buttonDelate.height+buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
-
-    // Draw the button
-    canvas(buttonDelate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
-    canvas(buttonErode) = Vec3b(200, 200, 200);
-    putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
-    canvas(buttonCannydetection) = Vec3b(200, 200, 200);
-    putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
-    canvas(buttonStitch) = Vec3b(200, 200, 200);
-    putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
-
-    // Draw the image
-    //img.copyTo(canvas(Rect(0, buttonDelate.height, img.cols, img.rows)));
-    //img.copyTo(canvas(Rect(0, buttonErode.height, img.cols, img.rows)));
-    //img.copyTo(canvas(Rect(0, buttonCannydetection.height, img.cols, img.rows)));
-    //img.copyTo(canvas(Rect(0, buttonStitch.height, img.cols, img.rows)));
-
-    // Setup callback function
-    namedWindow(toolsWindowName);
-    setMouseCallback(toolsWindowName, callBackFunc);
-    
     //show image
-    imshow("original", original);
+    imshow("image", original);
+
+    if (uiOption == 1) {
+        while (true) {
+            update();
+            waitKey(1);
+            int option;
+            cout << "Enter the option: \n 1: Erode \n 2: Dilate \n 3: Canny edge detection \n 4: Resize \n 5: Set brightness \n 6: Stitch \n 7: Exit" << endl;
+            cin >> option;
+            if (option==1) {
+                isErode = !isErode;
+            } else if (option == 2) {
+                isDilate = !isDilate;
+            } else if (option == 3) {
+                isCanny = !isCanny;
+            } else if (option == 4) {
+                cout << "Enter width:" << endl;
+                cin >> width;
+                cout << "Enter height:" << endl;
+                cin >> height;
+            } else if (option == 5) {
+                cout << "Enter brightness value:" << endl;
+                cin >> brightness;
+            } else if (option == 6) {
+                string imagePath;
+                cout << "Enter an image path:" << endl;
+                cin >> imagePath;
+                Mat imageToStitch;
+                imageToStitch = imread(imagePath, IMREAD_COLOR);
+                // Check for failure
+                if (imageToStitch.empty())
+                {
+                    printf(" No image data \n ");
+                }
+                else {
+                    toStitch = true;
+                }
+            }
+            else if (option == 7) {
+                destroyAllWindows;
+                return 0;
+            }
+            else {
+                cout << "Option doesn't exist" << endl;
+            }
+        }
+    }
+    if (uiOption == 2) {
+        //create tool window
+        namedWindow("tools", WINDOW_AUTOSIZE);
+
+        //create trackBars
+        createTrackbar("Brightness", toolsWindowName, &brightness, 100, on_trackbar);
+        createTrackbar("Width", toolsWindowName, &width, 1000, on_trackbar);
+        createTrackbar("Height", toolsWindowName, &height, 1000, on_trackbar);
+
+        // An image
+        Mat3b img(300, 300, Vec3b(0, 255, 0));
+
+        //Buttons
+        buttonDelate = Rect(0, 0, img.cols, 50);
+
+        buttonErode = Rect(0, 60, img.cols, 50);
+
+        buttonCannydetection = Rect(0, 120, img.cols, 50);
+
+        buttonStitch = Rect(0, 180, img.cols, 50);
+
+        // The canvas
+        canvas = Mat3b(img.rows + buttonDelate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
+
+        // Draw the button
+        canvas(buttonDelate) = Vec3b(200, 200, 200);
+        putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+        canvas(buttonErode) = Vec3b(200, 200, 200);
+        putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+        canvas(buttonCannydetection) = Vec3b(200, 200, 200);
+        putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+        canvas(buttonStitch) = Vec3b(200, 200, 200);
+        putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+
+        // Setup callback function
+        namedWindow(toolsWindowName);
+        setMouseCallback(toolsWindowName, callBackFunc);
+
+        //init button
+        imshow(toolsWindowName, canvas);
 
 
-    // Wait for any key stroke
-    waitKey(0);
+        // Wait for any key stroke
+        waitKey(0);
 
-    //destroy all open windows
-    destroyAllWindows;
-    return 0;
+        //destroy all open windows
+        destroyAllWindows;
+        return 0;
+    }
 }
