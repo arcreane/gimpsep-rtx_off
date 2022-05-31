@@ -14,6 +14,7 @@ Gimpsep.x64
 .tlog
 .obj
 .exe
+.vs/
 .vs/Gimpsep/v17/.suo
 .vs/Gimpsep/v17/Browse.VC.db
 .vs/Gimpsep/v17/Browse.VC.db-shm
