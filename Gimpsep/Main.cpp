@@ -137,8 +137,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
             string imagePath;
             cout << "Enter an image path:" << endl;
             cin >> imagePath;
-            Mat imageToStitch;
             imageToStitch = imread(imagePath, IMREAD_COLOR);
+            
             // Check for failure
             if (imageToStitch.empty())
             {
@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
     String imageName;
     cout << "Enter an image path:" << endl;
     cin >> imageName;
-    imageName = "van_gogh.jpg";
+    //imageName = "van_gogh.jpg";
     original = imread(imageName, IMREAD_COLOR);
     image = original;
 
