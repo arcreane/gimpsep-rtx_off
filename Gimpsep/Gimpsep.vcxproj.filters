@@ -18,9 +18,33 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LightenAnDarken.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DilatationAndErosion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PanoramaStitching.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CannyEdgeDetection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightenAnDarken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DilatationAndErosion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PanoramaStitching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CannyEdgeDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
