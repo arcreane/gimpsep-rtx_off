@@ -1,13 +1,13 @@
 
 
-#include <opencv2/opencv.hpp>
-#include <iostream>
 
 #include "..\header\Main.h"
 #include "..\AbstractUserInterfaceMode.h"
 #include "..\GraphicUserInterfaceMode.h"
 #include "..\CommandLineUserInterfaceMode.h"
 #include "..\header\PanoramaStitching.h"
+#include <opencv2/opencv.hpp>
+#include <iostream>
 
 
 using namespace cv;
@@ -39,12 +39,15 @@ string buttonStitchText("Stitch");
 static int runGUIMode()
 {
     GUIMode userInterface = GUIMode::GUIMode();
+    cout << &userInterface.isErode;
+    userInterface.setOriginalImage(original);
     return userInterface.run();
 }
 
 static int runCLUIMode()
 {
     CLUIMode userInterface = CLUIMode::CLUIMode();
+    userInterface.setOriginalImage(original);
     return userInterface.run();
 }
 
@@ -54,13 +57,14 @@ int main(int argc, char* argv[]) {
     // Enter the ui option
     cout << "welcome to our Gimp Project, the ui option doesn't use external dependencies, only opencv so feel free to test it" << endl;
 
-    cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
     char uiOption;
-    while (1) {
-        uiOption = (char)waitKey(1000);
-        if (uiOption == '1' || uiOption == '2') {
-            break;
-        }
+    cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
+    cin >> uiOption;
+
+    if (uiOption == '3') {
+        original = imread("C:/Users/TTR92/OneDrive/Documents/GitHubDesktop/gimpsep-rtx_off/Gimpsep/sampleImage/van_gogh.jpg", IMREAD_COLOR);
+        runGUIMode();
+        return 1;
     }
 
     // Read the image file
@@ -92,5 +96,7 @@ int main(int argc, char* argv[]) {
         runGUIMode();
         return 1;
     }
+
+    
 }
 

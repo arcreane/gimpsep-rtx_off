@@ -2,9 +2,9 @@
 
 int UIMode::run()
 {
+    cout << "\n notallowed ---------------------------------------------------";
     return 0;
 }
-
 void UIMode::update() {
     
     image = lightenAnDarken(original, 1, brightness - 50);
@@ -31,15 +31,19 @@ Mat UIMode::resizing(Mat image, int width, int height) {
 }
 
 void UIMode::toggleIsErode() {
-    isErode = !isErode;
+    UIMode::isErode = !isErode;
 }
 void UIMode::toggleIsDilate() {
-    isDilate = !isDilate;
+    UIMode::isDilate = !isDilate;
 }
 void UIMode::toggleIsCanny() {
-    isCanny = !isCanny;
+    UIMode::isCanny = !isCanny;
 }
 void UIMode::toggleToStitch() {
-    toStitch = !toStitch;
+    UIMode::toStitch = !toStitch;
 }
 
+void UIMode::setOriginalImage(Mat image) {
+    UIMode::original = image;
+    UIMode::image = image;
+}

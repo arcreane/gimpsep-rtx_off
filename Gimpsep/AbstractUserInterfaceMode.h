@@ -33,6 +33,10 @@ public:
 	void toggleIsCanny();
 	void toggleToStitch();
 
+	void setOriginalImage(Mat image);
 
+	~UIMode() {
+		cout << "\ndestroyedUI -------------------------------------------------------------------------------";
+	}
 };
 

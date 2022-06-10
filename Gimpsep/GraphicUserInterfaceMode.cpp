@@ -5,7 +5,7 @@ void GUIMode::on_trackbar(int, void*) {
 }
 
 struct StaticOpenCVCallBackHandler {
-    GUIMode mode;
+    GUIMode &mode;
 
     // static  function
     static void callback(int event, int x, int y, int flags, void* userdata) {
@@ -14,7 +14,8 @@ struct StaticOpenCVCallBackHandler {
     }
     // class member function
     void real_callback(int event, int x, int y, int flags) { 
-        mode.uiCallbackFunction(event, x, y, flags); }
+        mode.uiCallbackFunction(event, x, y, flags);
+    }
 
     // static trackbar call back function
     static void on_trackbar(int pos, void* userptr) {
@@ -23,9 +24,11 @@ struct StaticOpenCVCallBackHandler {
     }
     // class member function
     void real_on_trackbar() {
-        mode.update();
+       mode.update();
     }
-
+    ~StaticOpenCVCallBackHandler() {
+        cout << "\nDestroyed!!!";
+    }
 };
 
 int GUIMode::run() {
@@ -66,7 +69,8 @@ int GUIMode::run() {
     // Setup callback function
 
     namedWindow(toolsWindowName);
-
+    cout << &canvas;
+    cout << this->isErode;
     // Mount back the parameters
     setMouseCallback(toolsWindowName, StaticOpenCVCallBackHandler::callback, (void*)(&handler));
 
@@ -83,7 +87,7 @@ int GUIMode::run() {
 }
 
 void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
-
+    //cout << "button up" << "\n dilate" << !isDilate << "\n erode" << !isErode << "\n canny" << !isCanny << "\n stitch" << !toStitch;
     if (event == EVENT_LBUTTONDOWN)
     {
         if (buttonDelate.contains(Point(x, y)))
@@ -117,6 +121,7 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
                 rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
             }
         }
+        waitKey(10);
         update();
     }
     if (event == EVENT_LBUTTONUP)
@@ -134,6 +139,6 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
             rectangle(canvas, buttonStitch, Scalar(200, 200, 200), 2);
         }
     }
-
     imshow(toolsWindowName, canvas);
+    return;
 }

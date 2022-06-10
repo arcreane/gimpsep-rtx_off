@@ -1,8 +1,9 @@
 #pragma once
 class Main
 {
+	int runCommandLineMode();
+
+	int runUiMode();
 };
 
-int runCommandLineMode();
 
-int runUiMode();
