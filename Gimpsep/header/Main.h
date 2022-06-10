@@ -3,4 +3,6 @@ class Main
 {
 };
 
+int runCommandLineMode();
 
+int runUiMode();
