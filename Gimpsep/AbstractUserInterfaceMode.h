@@ -15,9 +15,10 @@ protected:
 	int brightness = 50;
 	int width = 500;
 	int height = 500;
-	Mat original, image;
+	Mat original, defaultImage, postProcessedImage;
+	Mat imageToStitch;
 	virtual int run();
-
+	 
 public:
 	bool isErode = false;
 	bool isDilate = false;
@@ -26,7 +27,7 @@ public:
 
 	void update();
 	Mat resizing(Mat image, int width, int height);
-	Mat imageToStitch;
+	
 
 	void toggleIsErode();
 	void toggleIsDilate();
@@ -34,6 +35,10 @@ public:
 	void toggleToStitch();
 
 	void setOriginalImage(Mat image);
+
+	void setDefaultImage(Mat image);
+
+	void setPostProcessedImage(Mat image);
 
 	~UIMode() {
 		cout << "\ndestroyedUI -------------------------------------------------------------------------------";

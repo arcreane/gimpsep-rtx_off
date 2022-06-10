@@ -14,8 +14,6 @@ public :
 	Rect buttonStitch;
 	string buttonStitchText = "Stitch";
 
-
-
 	int run();
 	void on_trackbar(int, void*);
 	void uiCallbackFunction(int event, int x, int y, int flags);

@@ -9,5 +9,5 @@ class PanoramaStitching
 {
 };
 
-Mat panoramaStitching(Mat image, Mat imageToStitch);
+Mat panoramaStitching(Mat image, Mat imageToStitch,bool &ref_toStitch);
 

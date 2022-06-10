@@ -4,8 +4,16 @@ int CLUIMode::run() {
     while (true) {
         update();
         //  int option;
-        cout << "Enter the option: \n 1: Erode \n 2: Dilate \n 3: Canny edge detection \n 4: Resize \n 5: Set brightness \n 6: Stitch \n 7: Exit" << endl;
-        //          cin >> option;
+        cout << 
+            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEnter the option: \n" <<
+            "\n 1: Erode : "<< isErode <<
+            "\n 2: Dilate : " << isDilate <<
+            "\n 3: Canny edge detection : "<< isCanny <<
+            "\n 4: Resize : "<< height <<"x"<<width<<
+            "\n 5: Set brightness :"<<brightness<<
+            "\n 6: Stitch"<<
+            "\n 7: Exit" << endl;
+
         char option = (char)waitKey(0);
         cout << "Enter the option:" << option << " , ";
         if (option == 27)
@@ -30,20 +38,9 @@ int CLUIMode::run() {
             cin >> brightness;
         }
         else if (option == '6') {
-            string imagePath;
-            cout << "Enter an image path:" << endl;
-            cin >> imagePath;
-            imageToStitch = imread(imagePath, IMREAD_COLOR);
-            // Check for failure
-            if (imageToStitch.empty())
-            {
-                printf(" No image data \n ");
-            }
-            else {
-                toggleToStitch();
-            }
+            toggleToStitch();
         }
-        else if (option == 7) {
+        else if (option == '7') {
             destroyAllWindows;
             return 0;
         }

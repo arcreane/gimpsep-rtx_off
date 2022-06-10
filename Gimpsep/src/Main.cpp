@@ -13,30 +13,9 @@
 using namespace cv;
 using namespace std;
 
-int brightness = 50;
-int width = 500;
-int height = 500;
-Mat original,image;
-bool isErode = false;
-bool isDilate = false;
-bool isCanny = false;
-bool toStitch = false;
-Mat imageToStitch;
-
-Mat3b canvas;
-
-string toolsWindowName = "tools";
-Rect buttonDelate;
-string buttonDelateText("Delate");
-Rect buttonErode;
-string buttonErodeText("Erode");
-Rect buttonCannydetection;
-string buttonCannydetectionText("CannyEdge");
-Rect buttonStitch;
-string buttonStitchText("Stitch");
 
 
-static int runGUIMode()
+static int runGUIMode(Mat original)
 {
     GUIMode userInterface = GUIMode::GUIMode();
     cout << &userInterface.isErode;
@@ -44,7 +23,7 @@ static int runGUIMode()
     return userInterface.run();
 }
 
-static int runCLUIMode()
+static int runCLUIMode(Mat original)
 {
     CLUIMode userInterface = CLUIMode::CLUIMode();
     userInterface.setOriginalImage(original);
@@ -61,9 +40,10 @@ int main(int argc, char* argv[]) {
     cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
     cin >> uiOption;
 
+    // secret option to use existing image
     if (uiOption == '3') {
-        original = imread("C:/Users/TTR92/OneDrive/Documents/GitHubDesktop/gimpsep-rtx_off/Gimpsep/sampleImage/van_gogh.jpg", IMREAD_COLOR);
-        runGUIMode();
+        Mat original = imread("C:/Users/TTR92/OneDrive/Documents/GitHubDesktop/gimpsep-rtx_off/Gimpsep/sampleImage/van_gogh.jpg", IMREAD_COLOR);
+        runGUIMode(original);
         return 1;
     }
 
@@ -71,8 +51,7 @@ int main(int argc, char* argv[]) {
     cout << "Enter an image path:" << endl;
     String imageName;
     cin >> imageName;
-    original = imread(imageName, IMREAD_COLOR);
-    image = original;
+    Mat original = imread(imageName, IMREAD_COLOR);
 
     // Check for failure
     if (original.empty())
@@ -88,15 +67,13 @@ int main(int argc, char* argv[]) {
     imshow("image", original);
 
     if (uiOption == '1') {
-        runCLUIMode();
+        runCLUIMode(original);
         return 1;
     }
 
     if (uiOption == '2') {
-        runGUIMode();
+        runGUIMode(original);
         return 1;
-    }
-
-    
+    }   
 }
 

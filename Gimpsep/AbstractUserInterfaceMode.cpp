@@ -1,27 +1,31 @@
 #include "AbstractUserInterfaceMode.h"
 
-int UIMode::run()
-{
-    cout << "\n notallowed ---------------------------------------------------";
-    return 0;
-}
 void UIMode::update() {
-    
-    image = lightenAnDarken(original, 1, brightness - 50);
-    image = resizing(image, width + 10, height + 10);
+    setPostProcessedImage(defaultImage);
+    if (toStitch) {
+        Mat temp = panoramaStitching(defaultImage, imageToStitch,toStitch);
+        setDefaultImage(temp); // set new default as stutch image
+        setPostProcessedImage(temp);
+    }
+    setPostProcessedImage(lightenAnDarken(postProcessedImage, 1, brightness - 50)); //!\\ don't move the lighten and darken under cannyEdgeDetection
+    setPostProcessedImage(resizing(postProcessedImage, width + 10, height + 10));
     if (isDilate) {
-        image = dilatationAndErosion(image, "dilate");
+        cout << "applying post process dilatation";
+        setPostProcessedImage(
+            dilatationAndErosion(postProcessedImage, "dilate")
+        );
     }
     if (isErode) {
-        image = dilatationAndErosion(image, "erode");
+        setPostProcessedImage(
+            dilatationAndErosion(postProcessedImage, "erode")
+        );
     }
     if (isCanny) {
-        image = cannyEdgeDetection(image);
+        setPostProcessedImage(
+            cannyEdgeDetection(postProcessedImage)
+        );
     }
-    if (toStitch) {
-        image = panoramaStitching(image, imageToStitch);
-    }
-    imshow("image", image);
+    imshow("image", postProcessedImage);
 }
 
 Mat UIMode::resizing(Mat image, int width, int height) {
@@ -44,6 +48,24 @@ void UIMode::toggleToStitch() {
 }
 
 void UIMode::setOriginalImage(Mat image) {
+    UIMode::height = image.size[0];
+    UIMode::width = image.size[1];
     UIMode::original = image;
-    UIMode::image = image;
+    UIMode::defaultImage = image;
+    UIMode::postProcessedImage = image;
+}
+
+void UIMode::setDefaultImage(Mat image) {
+    UIMode::height = image.size[0];
+    UIMode::width = image.size[1];
+    UIMode::defaultImage = image;
+}
+
+void UIMode::setPostProcessedImage(Mat image) {
+    UIMode::postProcessedImage = image;
+}
+
+int UIMode::run()
+{
+    return 0;
 }

@@ -1,10 +1,7 @@
 #include "GraphicUserInterfaceMode.h"
 
-void GUIMode::on_trackbar(int, void*) {
-    update();
-}
 
-struct StaticOpenCVCallBackHandler {
+struct StaticOpenCVCallBackHandler { // is used to use static methodes within the UIMode object
     GUIMode &mode;
 
     // static  function
@@ -26,102 +23,39 @@ struct StaticOpenCVCallBackHandler {
     void real_on_trackbar() {
        mode.update();
     }
-    ~StaticOpenCVCallBackHandler() {
-        cout << "\nDestroyed!!!";
-    }
 };
 
-int GUIMode::run() {
-    //create tool window
-    namedWindow("tools", WINDOW_AUTOSIZE);
-
-    //create trackBars
-    StaticOpenCVCallBackHandler handler = {*this};
-    createTrackbar("Brightness", toolsWindowName, &brightness, 100, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
-    createTrackbar("Width", toolsWindowName, &width, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
-    createTrackbar("Height", toolsWindowName, &height, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
-
-    // An image
-    Mat3b img(300, 300, Vec3b(0, 255, 0));
-
-    //Buttons
-    buttonDelate = Rect(0, 0, img.cols, 50);
-
-    buttonErode = Rect(0, 60, img.cols, 50);
-
-    buttonCannydetection = Rect(0, 120, img.cols, 50);
-
-    buttonStitch = Rect(0, 180, img.cols, 50);
-
-    // The canvas
-    canvas = Mat3b(img.rows + buttonDelate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
-
-    // Draw the button
-    canvas(buttonDelate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonErode) = Vec3b(200, 200, 200);
-    putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonCannydetection) = Vec3b(200, 200, 200);
-    putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonStitch) = Vec3b(200, 200, 200);
-    putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-
-    // Setup callback function
-
-    namedWindow(toolsWindowName);
-    cout << &canvas;
-    cout << this->isErode;
-    // Mount back the parameters
-    setMouseCallback(toolsWindowName, StaticOpenCVCallBackHandler::callback, (void*)(&handler));
-
-    //init button
-    imshow(toolsWindowName, canvas);
-
-
-    // Wait for any key stroke
-    waitKey(0);
-
-    //destroy all open windows
-    destroyAllWindows;
-    return 1;
+void GUIMode::on_trackbar(int, void*) {
+    update();
 }
 
 void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
-    //cout << "button up" << "\n dilate" << !isDilate << "\n erode" << !isErode << "\n canny" << !isCanny << "\n stitch" << !toStitch;
     if (event == EVENT_LBUTTONDOWN)
     {
         if (buttonDelate.contains(Point(x, y)))
         {
             toggleIsDilate();
             rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
+            imshow(toolsWindowName, canvas);
         }
         if (buttonErode.contains(Point(x, y)))
         {
             toggleIsErode();
             rectangle(canvas, buttonErode, Scalar(0, 0, 255), 2);
+            imshow(toolsWindowName, canvas);
         }
         if (buttonCannydetection.contains(Point(x, y)))
         {
             toggleIsCanny();
             rectangle(canvas, buttonCannydetection, Scalar(0, 0, 255), 2);
+            imshow(toolsWindowName, canvas);
         }
         if (buttonStitch.contains(Point(x, y)))
         {
-            string imagePath;
-            cout << "Enter an image path:" << endl;
-            cin >> imagePath;
-            imageToStitch = imread(imagePath, IMREAD_COLOR);
-            // Check for failure
-            if (imageToStitch.empty())
-            {
-                printf(" No image data \n ");
-            }
-            else {
-                toStitch = true;
-                rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
-            }
+            toggleToStitch();
+            rectangle(canvas, buttonStitch, Scalar(0, 0, 255), 2);
+            imshow(toolsWindowName, canvas);
         }
-        waitKey(10);
         update();
     }
     if (event == EVENT_LBUTTONUP)
@@ -141,4 +75,50 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
     }
     imshow(toolsWindowName, canvas);
     return;
+}
+
+int GUIMode::run() {
+    //create tool window
+    namedWindow("tools", WINDOW_AUTOSIZE);
+
+    //create trackBars
+    StaticOpenCVCallBackHandler handler = { *this };
+    createTrackbar("Brightness", toolsWindowName, &brightness, 100, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
+    createTrackbar("Width", toolsWindowName, &width, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
+    createTrackbar("Height", toolsWindowName, &height, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
+
+    // An image
+    Mat3b img(300, 300, Vec3b(0, 255, 0));
+
+    //Buttons
+    buttonDelate = Rect(0, 0, img.cols, 50);
+    buttonErode = Rect(0, 60, img.cols, 50);
+    buttonCannydetection = Rect(0, 120, img.cols, 50);
+    buttonStitch = Rect(0, 180, img.cols, 50);
+
+    // The canvas
+    canvas = Mat3b(img.rows + buttonDelate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
+
+    // Draw the button
+    canvas(buttonDelate) = Vec3b(200, 200, 200);
+    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    canvas(buttonErode) = Vec3b(200, 200, 200);
+    putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    canvas(buttonCannydetection) = Vec3b(200, 200, 200);
+    putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    canvas(buttonStitch) = Vec3b(200, 200, 200);
+    putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+
+    // Setup callback function
+    namedWindow(toolsWindowName);
+    // Mount back the parameters
+    setMouseCallback(toolsWindowName, StaticOpenCVCallBackHandler::callback, (void*)(&handler));
+    //init button
+    imshow(toolsWindowName, canvas);
+
+
+    while ((cv::waitKey() & 0xEFFFFF) != 27); //27 is the keycode for ESC
+    destroyAllWindows;
+
+    return 1;
 }
