@@ -2,17 +2,6 @@
 
 
 #include "..\header\Main.h"
-#include "..\AbstractUserInterfaceMode.h"
-#include "..\GraphicUserInterfaceMode.h"
-#include "..\CommandLineUserInterfaceMode.h"
-#include "..\header\PanoramaStitching.h"
-#include <opencv2/opencv.hpp>
-#include <iostream>
-
-
-using namespace cv;
-using namespace std;
-
 
 
 static int runGUIMode(Mat original)
@@ -42,7 +31,7 @@ int main(int argc, char* argv[]) {
 
     // secret option to use existing image
     if (uiOption == '3') {
-        Mat original = imread("C:/Users/TTR92/OneDrive/Documents/GitHubDesktop/gimpsep-rtx_off/Gimpsep/sampleImage/van_gogh.jpg", IMREAD_COLOR);
+        Mat original = imread("van_gogh-L.jpg", IMREAD_COLOR);
         runGUIMode(original);
         return 1;
     }
