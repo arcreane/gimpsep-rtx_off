@@ -13,39 +13,63 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Effect">
+      <UniqueIdentifier>{00283f9c-8800-4289-be93-a21d63e3d7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Effect">
+      <UniqueIdentifier>{9e388a6d-c345-4022-9d16-529f47ec8641}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CannyEdgeDetection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DilatationAndErosion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LightenAnDarken.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PanoramaStitching.cpp">
+    <ClCompile Include="AbstractUserInterfaceMode.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLineUserInterfaceMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicUserInterfaceMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CannyEdgeDetection.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DilatationAndErosion.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightenAnDarken.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PanoramaStitching.cpp">
+      <Filter>Source Files\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\CannyEdgeDetection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\DilatationAndErosion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\LightenAnDarken.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="header\Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\PanoramaStitching.h">
+    <ClInclude Include="AbstractUserInterfaceMode.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLineUserInterfaceMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicUserInterfaceMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\CannyEdgeDetection.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="header\DilatationAndErosion.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="header\LightenAnDarken.h">
+      <Filter>Header Files\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="header\PanoramaStitching.h">
+      <Filter>Header Files\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,13 @@
-#include "..\header\Main.h"
-#include "..\header\CannyEdgeDetection.h"
-#include "..\header\DilatationAndErosion.h"
-#include "..\header\LightenAnDarken.h"
-#include "..\header\PanoramaStitching.h"
+
+
 #include <opencv2/opencv.hpp>
 #include <iostream>
-#include <iostream>
+
+#include "..\header\Main.h"
+#include "..\AbstractUserInterfaceMode.h"
+#include "..\GraphicUserInterfaceMode.h"
+#include "..\CommandLineUserInterfaceMode.h"
+#include "..\header\PanoramaStitching.h"
 
 
 using namespace cv;
@@ -34,102 +36,34 @@ Rect buttonStitch;
 string buttonStitchText("Stitch");
 
 
-
-Mat resizing(Mat image, int width, int height) {
-	Mat resized;
-	resize(image, resized, Size(width, height), INTER_LINEAR);
-	return resized;
-}
-
-
-static void update() {
-    image = lightenAnDarken(original, 1, brightness - 50);
-    image = resizing(image, width+10, height+10);
-    if (isDilate) {
-        image = dilatationAndErosion(image, "dilate");
-    }
-    if (isErode) {
-        image = dilatationAndErosion(image, "erode");
-    }
-    if (isCanny) {
-        image = cannyEdgeDetection(image);
-    }
-    if (toStitch) {
-        image = panoramaStitching(image, imageToStitch);
-    }
-    imshow("image", image);
-}
-
-static void on_trackbar(int, void*) {
-    update();
-}
-
-void callBackFunc(int event, int x, int y, int flags, void* userdata)
+static int runGUIMode()
 {
-    if (event == EVENT_LBUTTONDOWN)
-    {
-        
-        if (buttonDelate.contains(Point(x, y)))
-        {
-            isDilate = !isDilate;
-            rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
-        }
-        if (buttonErode.contains(Point(x, y)))
-        {
-            isErode = !isErode;
-            rectangle(canvas, buttonErode, Scalar(0, 0, 255), 2);
-        }
-        if (buttonCannydetection.contains(Point(x, y)))
-        {
-            isCanny = !isCanny;
-            rectangle(canvas, buttonCannydetection, Scalar(0, 0, 255), 2);
-        }
-        if (buttonStitch.contains(Point(x, y)))
-        {
-            string imagePath;
-            cout << "Enter an image path:" << endl;
-            cin >> imagePath;
-            imageToStitch = imread(imagePath, IMREAD_COLOR);
-            // Check for failure
-            if (imageToStitch.empty())
-            {
-                printf(" No image data \n ");
-            }
-            else {
-                toStitch = true;
-                rectangle(canvas(buttonStitch), buttonStitch, Scalar(0, 0, 255), 2);
-            }
-        }
-        update();
-    }
-    if (event == EVENT_LBUTTONUP)
-    {
-        if (!isDilate) {
-            rectangle(canvas, buttonDelate, Scalar(200, 200, 200), 2);
-        }
-        if (!isErode) {
-            rectangle(canvas, buttonErode, Scalar(200, 200, 200), 2);
-        }
-        if (!isCanny) {
-            rectangle(canvas, buttonCannydetection, Scalar(200, 200, 200), 2);
-        }
-        if (!toStitch) {
-            rectangle(canvas, buttonStitch, Scalar(200, 200, 200), 2);
-        }
-    }
-
-    imshow(toolsWindowName, canvas);
+    GUIMode userInterface = GUIMode::GUIMode();
+    return userInterface.run();
 }
+
+static int runCLUIMode()
+{
+    CLUIMode userInterface = CLUIMode::CLUIMode();
+    return userInterface.run();
+}
+
+
 
 int main(int argc, char* argv[]) {
     // Enter the ui option
     cout << "welcome to our Gimp Project, the ui option doesn't use external dependencies, only opencv so feel free to test it" << endl;
 
     cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
-    char uiOption = (char)waitKey(0);
+    char uiOption;
+    while (1) {
+        uiOption = (char)waitKey(1000);
+        if (uiOption == '1' || uiOption == '2') {
+            break;
+        }
+    }
 
     // Read the image file
-
     cout << "Enter an image path:" << endl;
     String imageName;
     cin >> imageName;
@@ -150,117 +84,13 @@ int main(int argc, char* argv[]) {
     imshow("image", original);
 
     if (uiOption == '1') {
-        return runCommandLineMode();
+        runCLUIMode();
+        return 1;
     }
 
     if (uiOption == '2') {
-        return runUiMode();
+        runGUIMode();
+        return 1;
     }
 }
 
-static int runUiMode()
-{
-    //create tool window
-    namedWindow("tools", WINDOW_AUTOSIZE);
-
-    //create trackBars
-    createTrackbar("Brightness", toolsWindowName, &brightness, 100, on_trackbar);
-    createTrackbar("Width", toolsWindowName, &width, 1000, on_trackbar);
-    createTrackbar("Height", toolsWindowName, &height, 1000, on_trackbar);
-
-    // An image
-    Mat3b img(300, 300, Vec3b(0, 255, 0));
-
-    //Buttons
-    buttonDelate = Rect(0, 0, img.cols, 50);
-
-    buttonErode = Rect(0, 60, img.cols, 50);
-
-    buttonCannydetection = Rect(0, 120, img.cols, 50);
-
-    buttonStitch = Rect(0, 180, img.cols, 50);
-
-    // The canvas
-    canvas = Mat3b(img.rows + buttonDelate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
-
-    // Draw the button
-    canvas(buttonDelate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonErode) = Vec3b(200, 200, 200);
-    putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonCannydetection) = Vec3b(200, 200, 200);
-    putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-    canvas(buttonStitch) = Vec3b(200, 200, 200);
-    putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
-
-    // Setup callback function
-    namedWindow(toolsWindowName);
-    setMouseCallback(toolsWindowName, callBackFunc);
-
-    //init button
-    imshow(toolsWindowName, canvas);
-
-
-    // Wait for any key stroke
-    waitKey(0);
-
-    //destroy all open windows
-    destroyAllWindows;
-    return 0;
-}
-
-static int runCommandLineMode()
-{
-    while (true) {
-        update();
-        //  int option;
-        cout << "Enter the option: \n 1: Erode \n 2: Dilate \n 3: Canny edge detection \n 4: Resize \n 5: Set brightness \n 6: Stitch \n 7: Exit" << endl;
-        //          cin >> option;
-        char option = (char)waitKey(0);
-        cout << "Enter the option:" << option << " , ";
-        if (option == 27)
-            break;
-        if (option == '1') {
-            isErode = !isErode;
-        }
-        else if (option == '2') {
-            isDilate = !isDilate;
-        }
-        else if (option == '3') {
-            isCanny = !isCanny;
-        }
-        else if (option == '4') {
-            cout << "Enter width:" << endl;
-            cin >> width;
-            cout << "Enter height:" << endl;
-            cin >> height;
-        }
-        else if (option == '5') {
-            cout << "Enter brightness value:" << endl;
-            cin >> brightness;
-        }
-        else if (option == '6') {
-            string imagePath;
-            cout << "Enter an image path:" << endl;
-            cin >> imagePath;
-            imageToStitch = imread(imagePath, IMREAD_COLOR);
-            // Check for failure
-            if (imageToStitch.empty())
-            {
-                printf(" No image data \n ");
-            }
-            else {
-                toStitch = true;
-            }
-        }
-        else if (option == 7) {
-            destroyAllWindows;
-            return 0;
-        }
-        else {
-            cout << "Option doesn't exist" << endl;
-        }
-
-    }
-    return 1;
-}
