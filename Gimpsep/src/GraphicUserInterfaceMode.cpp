@@ -101,7 +101,7 @@ int GUIMode::run() {
 
     // Draw the button
     canvas(buttonDilate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDilate), buttonDelateText, Point(buttonDilate.width * 0.35, buttonDilate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    putText(canvas(buttonDilate), buttonDilateText, Point(buttonDilate.width * 0.35, buttonDilate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
     canvas(buttonErode) = Vec3b(200, 200, 200);
     putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
     canvas(buttonCannydetection) = Vec3b(200, 200, 200);
