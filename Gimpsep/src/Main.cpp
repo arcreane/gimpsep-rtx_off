@@ -23,13 +23,13 @@ static int runCLUIMode(Mat original)
 
 int main(int argc, char* argv[]) {
     // Enter the ui option
-    cout << "welcome to our Gimp Project, the ui option doesn't use external dependencies, only opencv so feel free to test it" << endl;
+    cout << "Welcome to our Gimp Project, the ui option doesn't use external dependencies, only opencv so feel free to test it" << endl;
 
     char uiOption;
     cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
     cin >> uiOption;
 
-    // secret option to use existing image
+    // Secret option to use existing image
     if (uiOption == '3') {
         Mat original = imread("van_gogh-L.jpg", IMREAD_COLOR);
         runGUIMode(original);

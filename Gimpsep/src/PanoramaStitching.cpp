@@ -22,7 +22,7 @@ Mat panoramaStitching(Mat image, Mat imageToStitch,bool &ref_toStitch) {
     Stitcher::Status status = stitcher->stitch(imgs, pano);
     if (status != Stitcher::OK)
     {
-        cout << "Can't stitch images, you might have entered two different image or the same image as the original one\n";
+        cout << "Can't stitch images, you might have entered two different images or the same image as the original one\n";
         ref_toStitch = false;
         return image;
     }
