@@ -126,7 +126,6 @@ int GUIMode::run() {
     //init button
     imshow(toolsWindowName, canvas);
 
-
     while ((cv::waitKey() & 0xEFFFFF) != 27); //27 is the keycode for ESC
     destroyAllWindows;
 
