@@ -5,6 +5,7 @@
 #include "DilatationAndErosion.h"
 #include "LightenAnDarken.h"
 #include "PanoramaStitching.h"
+#include "ExportImage.h"
 
 using namespace cv;
 using namespace std;
@@ -41,7 +42,7 @@ public:
 	void setPostProcessedImage(Mat image);
 
 	~UIMode() {
-		cout << "\ndestroyedUI -------------------------------------------------------------------------------";
+		cout << "\n------------------------------------- destroyed UI ----------------------------------------";
 	}
 };
 

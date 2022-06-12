@@ -10,7 +10,6 @@ void UIMode::update() {
     setPostProcessedImage(lightenAnDarken(postProcessedImage, 1, brightness - 50)); //!\\ don't move the lighten and darken under cannyEdgeDetection
     setPostProcessedImage(resizing(postProcessedImage, width + 10, height + 10));
     if (isDilate) {
-        cout << "applying post process dilatation";
         setPostProcessedImage(
             dilatationAndErosion(postProcessedImage, "dilate")
         );

@@ -10,9 +10,8 @@ using namespace cv;
 using namespace std;
 class Main
 {
-	int runCommandLineMode();
-
-	int runUiMode();
 };
 
+int runCLUIMode(Mat original);
 
+int runGUIMode(Mat original);

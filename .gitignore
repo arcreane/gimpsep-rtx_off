@@ -57,3 +57,5 @@ Gimpsep/x64/Debug/rotate_video_students.obj
 .vs/Gimpsep/FileContentIndex/b43d6418-0f2c-4d1c-80ac-808c2dc5082e.vsidx
 
 *.lock
+*.pdb
+*.idb

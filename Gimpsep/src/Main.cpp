@@ -1,10 +1,7 @@
-
-
-
 #include "..\header\Main.h"
 
 
-static int runGUIMode(Mat original)
+int runGUIMode(Mat original)
 {
     GUIMode userInterface = GUIMode::GUIMode();
     cout << &userInterface.isErode;
@@ -12,7 +9,7 @@ static int runGUIMode(Mat original)
     return userInterface.run();
 }
 
-static int runCLUIMode(Mat original)
+int runCLUIMode(Mat original)
 {
     CLUIMode userInterface = CLUIMode::CLUIMode();
     userInterface.setOriginalImage(original);
@@ -26,7 +23,7 @@ int main(int argc, char* argv[]) {
     cout << "Welcome to our Gimp Project, the ui option doesn't use external dependencies, only opencv so feel free to test it" << endl;
 
     char uiOption;
-    cout << "Enter the ui option: \n 1: Command line \n 2: UI" << endl;
+    cout << "Enter the ui option: \n 1: Command line \n 2: Graphic \n 3: Test Sample (GUI)" << endl;
     cin >> uiOption;
 
     // Secret option to use existing image
@@ -37,10 +34,10 @@ int main(int argc, char* argv[]) {
     }
 
     // Read the image file
+    String fullImagePath;
     cout << "Enter an image path:" << endl;
-    String imageName;
-    cin >> imageName;
-    Mat original = imread(imageName, IMREAD_COLOR);
+    cin >> fullImagePath;
+    Mat original = imread(fullImagePath, IMREAD_COLOR);
 
     // Check for failure
     if (original.empty())

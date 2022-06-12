@@ -56,6 +56,12 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
             rectangle(canvas, buttonStitch, Scalar(0, 0, 255), 2);
             imshow(toolsWindowName, canvas);
         }
+        if (buttonExport.contains(Point(x, y)))
+        {
+            exportImage(postProcessedImage);
+            rectangle(canvas, buttonExport, Scalar(0, 0, 255), 2);
+            imshow(toolsWindowName, canvas);
+        }
         update();
     }
     if (event == EVENT_LBUTTONUP)
@@ -95,6 +101,7 @@ int GUIMode::run() {
     buttonErode = Rect(0, 60, img.cols, 50);
     buttonCannydetection = Rect(0, 120, img.cols, 50);
     buttonStitch = Rect(0, 180, img.cols, 50);
+    buttonExport = Rect(0, 280, img.cols, 50);
 
     // The canvas
     canvas = Mat3b(img.rows + buttonDilate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
@@ -108,6 +115,8 @@ int GUIMode::run() {
     putText(canvas(buttonCannydetection), buttonCannydetectionText, Point(buttonCannydetection.width * 0.35, buttonCannydetection.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
     canvas(buttonStitch) = Vec3b(200, 200, 200);
     putText(canvas(buttonStitch), buttonStitchText, Point(buttonStitch.width * 0.35, buttonStitch.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    canvas(buttonExport) = Vec3b(200, 200, 200);
+    putText(canvas(buttonExport), buttonExportText, Point(buttonExport.width * 0.35, buttonExport.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
 
     // Setup callback function
     namedWindow(toolsWindowName);

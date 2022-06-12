@@ -45,6 +45,9 @@
     <ClCompile Include="src\GraphicUserInterfaceMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ExportImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Main.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\GraphicUserInterfaceMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\ExportImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

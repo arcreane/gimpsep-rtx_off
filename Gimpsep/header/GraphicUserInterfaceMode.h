@@ -13,6 +13,8 @@ public :
 	string buttonCannydetectionText = "CannyEdge";
 	Rect buttonStitch;
 	string buttonStitchText = "Stitch";
+	Rect buttonExport;
+	string buttonExportText = "ExportToPng";
 
 	int run();
 	void on_trackbar(int, void*);
