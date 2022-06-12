@@ -32,10 +32,10 @@ void GUIMode::on_trackbar(int, void*) {
 void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
     if (event == EVENT_LBUTTONDOWN)
     {
-        if (buttonDelate.contains(Point(x, y)))
+        if (buttonDilate.contains(Point(x, y)))
         {
             toggleIsDilate();
-            rectangle(canvas, buttonDelate, Scalar(0, 0, 255), 2);
+            rectangle(canvas, buttonDilate, Scalar(0, 0, 255), 2);
             imshow(toolsWindowName, canvas);
         }
         if (buttonErode.contains(Point(x, y)))
@@ -61,7 +61,7 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
     if (event == EVENT_LBUTTONUP)
     {
         if (!isDilate) {
-            rectangle(canvas, buttonDelate, Scalar(200, 200, 200), 2);
+            rectangle(canvas, buttonDilate, Scalar(200, 200, 200), 2);
         }
         if (!isErode) {
             rectangle(canvas, buttonErode, Scalar(200, 200, 200), 2);
@@ -91,17 +91,17 @@ int GUIMode::run() {
     Mat3b img(300, 300, Vec3b(0, 255, 0));
 
     //Buttons
-    buttonDelate = Rect(0, 0, img.cols, 50);
+    buttonDilate = Rect(0, 0, img.cols, 50);
     buttonErode = Rect(0, 60, img.cols, 50);
     buttonCannydetection = Rect(0, 120, img.cols, 50);
     buttonStitch = Rect(0, 180, img.cols, 50);
 
     // The canvas
-    canvas = Mat3b(img.rows + buttonDelate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
+    canvas = Mat3b(img.rows + buttonDilate.height + buttonErode.height + buttonCannydetection.height + buttonStitch.height, img.cols, Vec3b(0, 0, 0));
 
     // Draw the button
-    canvas(buttonDelate) = Vec3b(200, 200, 200);
-    putText(canvas(buttonDelate), buttonDelateText, Point(buttonDelate.width * 0.35, buttonDelate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
+    canvas(buttonDilate) = Vec3b(200, 200, 200);
+    putText(canvas(buttonDilate), buttonDilateText, Point(buttonDilate.width * 0.35, buttonDilate.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
     canvas(buttonErode) = Vec3b(200, 200, 200);
     putText(canvas(buttonErode), buttonErodeText, Point(buttonErode.width * 0.35, buttonErode.height * 0.7), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 0, 0));
     canvas(buttonCannydetection) = Vec3b(200, 200, 200);

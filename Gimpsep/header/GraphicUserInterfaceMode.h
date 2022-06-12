@@ -5,8 +5,8 @@ class GUIMode : public UIMode
 public :
 	Mat3b canvas;
 	string toolsWindowName = "tools";
-	Rect buttonDelate;
-	string buttonDelateText= "Delate";
+	Rect buttonDilate;
+	string buttonDilateText= "Dilate";
 	Rect buttonErode;
 	string buttonErodeText= "Erode";
 	Rect buttonCannydetection;
