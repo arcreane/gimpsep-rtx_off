@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     cout << "Enter the ui option: \n 1: Command line \n 2: Graphic \n 3: Test Sample (GUI)" << endl;
     cin >> uiOption;
 
-    // Secret option to use existing image
+    // Secret option to use an existing image directly
     if (uiOption == '3') {
         Mat original = imread("van_gogh-L.jpg", IMREAD_COLOR);
         runGUIMode(original);

@@ -11,12 +11,12 @@ void UIMode::update() {
     setPostProcessedImage(resizing(postProcessedImage, width + 10, height + 10));
     if (isDilate) {
         setPostProcessedImage(
-            dilatationAndErosion(postProcessedImage, "dilate")
+            dilatationAndErosion( postProcessedImage, "dilate" , dilation)
         );
     }
     if (isErode) {
         setPostProcessedImage(
-            dilatationAndErosion(postProcessedImage, "erode")
+            dilatationAndErosion( postProcessedImage, "erode" , erosion)
         );
     }
     if (isCanny) {

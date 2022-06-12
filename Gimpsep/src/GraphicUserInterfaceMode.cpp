@@ -59,7 +59,6 @@ void GUIMode::uiCallbackFunction(int event, int x, int y, int flags) {
         if (buttonExport.contains(Point(x, y)))
         {
             exportImage(postProcessedImage);
-            rectangle(canvas, buttonExport, Scalar(0, 0, 255), 2);
             imshow(toolsWindowName, canvas);
         }
         update();
@@ -92,6 +91,8 @@ int GUIMode::run() {
     createTrackbar("Brightness", toolsWindowName, &brightness, 100, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
     createTrackbar("Width", toolsWindowName, &width, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
     createTrackbar("Height", toolsWindowName, &height, 1000, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
+    createTrackbar("Dilation", toolsWindowName, &dilation, 21, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
+    createTrackbar("Erosion", toolsWindowName, &erosion, 21, StaticOpenCVCallBackHandler::on_trackbar, (void*)(&handler));
 
     // An image
     Mat3b img(300, 300, Vec3b(0, 255, 0));

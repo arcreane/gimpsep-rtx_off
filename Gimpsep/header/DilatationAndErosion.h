@@ -5,4 +5,4 @@
 using namespace cv;
 using namespace std;
 
-Mat dilatationAndErosion(Mat image, string action);
+Mat dilatationAndErosion(Mat image, string action, int morph_size);

@@ -16,6 +16,8 @@ protected:
 	int brightness = 50;
 	int width = 500;
 	int height = 500;
+	int erosion = 2;
+	int dilation = 2;
 	Mat original, defaultImage, postProcessedImage;
 	Mat imageToStitch;
 	virtual int run();
@@ -25,6 +27,7 @@ public:
 	bool isDilate = false;
 	bool isCanny = false;
 	bool toStitch = false;
+
 
 	void update();
 	Mat resizing(Mat image, int width, int height);
